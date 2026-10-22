@@ -1547,6 +1547,11 @@ export function techBase(f: { type: string; variant?: string | null; h: number }
 
 export const ELECTRIC_FURNITURE = new Set<string>([
   ...LAMP_TYPES,
+  "modem_router",
+  "nas_server",
+  "network_cabinet",
+  "printer_3d_open",
+  "printer_3d_enclosed",
   "radiator",
   "ac_unit",
   "awning",
