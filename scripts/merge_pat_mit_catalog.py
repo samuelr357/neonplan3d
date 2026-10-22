@@ -109,7 +109,7 @@ replace("components/furniture2d.ts",
 s=read("furniture-names.ts")
 s='import { FURNITURE_TYPES as PAT_IDS } from "./furniture/metadata.ts";\n'+s
 s,n=re.subn(r'  if \(!isPackType\(type\)\) return translate\(hass, .*?;\n',
-'''  if (!isPackType(type)) {
+lambda _: '''  if (!isPackType(type)) {
     const key = "furn_" + type;
     const label = translate(hass, key as Parameters<typeof translate>[1]);
     if (label === key && (PAT_IDS as readonly string[]).includes(type)) {
