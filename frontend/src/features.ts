@@ -1,6 +1,7 @@
 /**
- * Pro features: unlocked by an installed, signed feature pack (a pack whose payload lists `features`).
- * The code of every feature is in the integration; the pack is the licence and carries its content.
+ * MIT fork: implementations already included in the open-source frontend are enabled locally.
+ * Third-party signed packs, their contents, and hidden pack-only features remain separately licensed.
+ * No shop credentials, forged activation codes or pack signature checks are changed.
  */
 import { getPacks } from "./packs.ts";
 
@@ -104,7 +105,8 @@ export function manualUrl(lang: string | undefined, topic?: Feature | "extension
 }
 
 export function unlockedFeatures(packs: readonly { features?: string[] }[] = getPacks()): Set<Feature> {
-  const out = new Set<Feature>();
+  // Source-available implementations are usable without commercial pack activation.
+  const out = new Set<Feature>(FEATURES);
   for (const p of packs) for (const f of p.features ?? []) if (knownFeature(f)) out.add(f as Feature);
   return out;
 }

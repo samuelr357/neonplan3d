@@ -85,6 +85,7 @@ function copyFonts() {
   }
 }
 
+// MIT edition: editor 940 KB allows original networking / 3D-printing objects and translations.
 // main 674 KB and 3D 812 KB on 2026-10-22 for richer module cards (a state line, a second value, a chain, cells, a hint), module markers and solid module pipes
 // main 668 KB and 3D 808 KB on 2026-10-22 for what modules may draw: lines in the flow layer, surfaces over floors and lawns, labels, layered light on an item, a card curve, fields on furniture and module settings
 // 3D 796 KB and editor 916 KB on 2026-10-21 for roof sections that cut each other, wings meeting a roof in valleys (#466, #605) and the ends per section
@@ -118,7 +119,7 @@ function copyFonts() {
 // editor 800 KB on 2026-10-14 for the awning (form, sensors) and the 1.18.2 fixes
 // main 570 KB, 3D 770 KB and card editor 230 KB on 2026-10-14 for the awnings (five kinds) and their texts
 // main 590 KB, editor 820 KB, card editor 235 KB on 2026-10-15 for the household (bins, mailboxes, Haushalt Pro) and its texts
-const BUDGET = { "neonplan3d.js": 688 * 1024, "neonplan3d-fun.js": 40 * 1024, "neonplan3d-voice.js": 60 * 1024, "neonplan3d-timetravel.js": 120 * 1024, "neonplan3d-3d.js": 812 * 1024, "neonplan3d-editor.js": 924 * 1024, "neonplan3d-card-editor.js": 267 * 1024 };
+const BUDGET = { "neonplan3d.js": 688 * 1024, "neonplan3d-fun.js": 40 * 1024, "neonplan3d-voice.js": 60 * 1024, "neonplan3d-timetravel.js": 120 * 1024, "neonplan3d-3d.js": 812 * 1024, "neonplan3d-editor.js": 940 * 1024, "neonplan3d-card-editor.js": 267 * 1024 };
 
 copyFonts();
 if (watch) {
