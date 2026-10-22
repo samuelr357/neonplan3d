@@ -1262,6 +1262,11 @@ export const FURNITURE_TYPES = [
   "stairs",
   "stairs_u",
   "robot_vacuum",
+  "modem_router",
+  "nas_server",
+  "network_cabinet",
+  "printer_3d_open",
+  "printer_3d_enclosed",
   "inverter",
   "home_battery",
   "wallbox",
@@ -1283,6 +1288,12 @@ export const FURNITURE_TYPES = [
   "lamp_fan",
   "wifi_ap",
   "water_heater",
+  "modem_router",
+  "nas_server",
+  "network_cabinet",
+  "printer_3d_open",
+  "printer_3d_enclosed",
+  "filament_shelf_wall",
 ] as const;
 
 /** Furniture library sections (the editor lists them in this order). */
@@ -1293,11 +1304,11 @@ export const FURNITURE_GROUPS: Record<string, FurnitureType[]> = {
   kitchen: ["kitchen", "kitchen_wall", "kitchen_tall", "island", "worktop", "sink", "stove", "dishwasher", "fridge"],
   sleeping: ["bed", "bunk_bed", "nightstand", "wardrobe", "dresser"],
   bath: ["bathtub", "shower", "wc", "washbasin", "washer", "dryer"],
-  work: ["desk", "worktop", "office_chair", "tall_cabinet", "coat_rack", "radiator", "ac_unit", "stairs", "stairs_u", "robot_vacuum"],
+  work: ["desk", "worktop", "office_chair", "tall_cabinet", "coat_rack", "radiator", "ac_unit", "stairs", "stairs_u", "robot_vacuum", "printer_3d_open", "printer_3d_enclosed", "filament_shelf_wall", "nas_server", "network_cabinet", "modem_router"],
   vehicles: ["parking"],
   outdoor: ["awning"],
   household: ["waste_bin", "mailbox"],
-  switches: ["wall_switch", "wall_socket", "wifi_ap", "water_heater"],
+  switches: ["wall_switch", "wall_socket", "wifi_ap", "water_heater", "modem_router", "nas_server", "network_cabinet"],
 };
 
 /** Energy devices: placed and set up in the Energy tool (stored like furniture, not in the library). */
@@ -1632,6 +1643,12 @@ export const FURNITURE_SIZE: Record<FurnitureType, [number, number, number]> = {
   wifi_ap: [0.2, 0.2, 0.04],
   water_heater: [0.56, 0.56, 1.5],
   robot_vacuum: [0.36, 0.5, 0.1],
+  modem_router: [0.34, 0.22, 0.12],
+  nas_server: [0.42, 0.45, 0.34],
+  network_cabinet: [0.6, 0.65, 1.35],
+  printer_3d_open: [0.55, 0.55, 0.75],
+  printer_3d_enclosed: [0.62, 0.62, 0.68],
+  filament_shelf_wall: [1.4, 0.32, 0.85],
   parking: [2.6, 5.2, 0.02],
   lamp_pendant: [0.4, 0.4, 0.8],
   // blade span, and the drop from the ceiling to the bottom of its light
