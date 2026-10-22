@@ -48,6 +48,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add frontend/src/furniture frontend/src/viewer/furniture-models frontend/src/components/furniture-symbols frontend/src/viewer/furniture-builder.ts frontend/src/model.ts frontend/src/library-index.ts frontend/src/furniture-names.ts frontend/src/components/furniture2d.ts frontend/src/viewer/furniture.ts frontend/src/pat-library.test.ts frontend/build.mjs frontend/lang/pt.json docs/PAT-MIT* custom_components/neonplan3d/frontend site/import
+          git add frontend/src/furniture frontend/src/viewer/furniture-models frontend/src/components/furniture-symbols frontend/src/viewer/furniture-builder.ts frontend/src/model.ts frontend/src/library-index.ts frontend/src/furniture-names.ts frontend/src/components/furniture2d.ts frontend/src/viewer/furniture.ts frontend/src/pat-library.test.ts frontend/src/library-index.test.ts frontend/build.mjs frontend/lang/pt.json docs/PAT-MIT* custom_components/neonplan3d/frontend site/import
           git commit -m "feat: integrate PATCoder97 MIT furniture library with compiled bundles"
           git push origin HEAD:merge-patcoder97-mit-catalog
