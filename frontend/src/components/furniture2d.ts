@@ -69,6 +69,43 @@ function cornerSeating(w: number, d: number, u: boolean): Part[] {
 /** Symbol parts for a furniture type of size w × d (metres). */
 export function furnitureSymbol(type: string, w: number, d: number): Part[] | typeof nothing {
   switch (type) {
+    case "modem_router":
+      return [
+        rect(-w * 0.47, -d * 0.42, w * 0.47, d * 0.42, "fp3d-sym-fill"),
+        ...[-0.3, -0.1, 0.1, 0.3].map((k) => circle(k * w, d * 0.3, 0.008)),
+        line(-w * 0.32, -d * 0.42, -w * 0.32, -d * 0.7, "fp3d-sym-strong"),
+        line(w * 0.32, -d * 0.42, w * 0.32, -d * 0.7, "fp3d-sym-strong"),
+      ];
+    case "nas_server":
+      return [
+        rect(-w * 0.45, -d * 0.45, w * 0.45, d * 0.45, "fp3d-sym-fill"),
+        ...[-0.24, -0.08, 0.08, 0.24].map((k) => line(k * w, -d * 0.36, k * w, d * 0.34)),
+        circle(w * 0.37, d * 0.32, 0.015),
+      ];
+    case "network_cabinet":
+      return [
+        rect(-w * 0.47, -d * 0.46, w * 0.47, d * 0.46, "fp3d-sym-fill"),
+        rect(-w * 0.35, -d * 0.34, w * 0.35, d * 0.34),
+        line(-w * 0.35, 0, w * 0.35, 0, "fp3d-sym-strong"),
+      ];
+    case "printer_3d_open":
+      return [
+        rect(-w * 0.46, -d * 0.46, w * 0.46, d * 0.46),
+        rect(-w * 0.3, -d * 0.3, w * 0.3, d * 0.3, "fp3d-sym-fill"),
+        line(-w * 0.36, -d * 0.38, -w * 0.36, d * 0.38, "fp3d-sym-strong"),
+        line(w * 0.36, -d * 0.38, w * 0.36, d * 0.38, "fp3d-sym-strong"),
+      ];
+    case "printer_3d_enclosed":
+      return [
+        rect(-w * 0.48, -d * 0.48, w * 0.48, d * 0.48, "fp3d-sym-fill"),
+        rect(-w * 0.35, -d * 0.35, w * 0.35, d * 0.35),
+        rect(-w * 0.14, -d * 0.12, w * 0.14, d * 0.12),
+      ];
+    case "filament_shelf_wall":
+      return [
+        rect(-w / 2, -d / 2, w / 2, d / 2, "fp3d-sym-fill"),
+        ...[-0.32, -0.12, 0.12, 0.32].map((k) => circle(k * w, 0, Math.min(d * 0.34, w * 0.09))),
+      ];
     case "sofa":
       return seating(w, d, Math.max(1, Math.round((w - 0.4) / 0.62)), true);
     case "armchair":
