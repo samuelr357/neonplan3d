@@ -158,6 +158,12 @@ const BASIC: Record<string, [Kind, Room[]]> = {
   wall_switch: ["tech", []],
   wall_socket: ["tech", []],
   wifi_ap: ["tech", []],
+  modem_router: ["tech", ["office", "utility", "living"]],
+  nas_server: ["tech", ["office", "utility"]],
+  network_cabinet: ["tech", ["office", "utility", "garage"]],
+  printer_3d_open: ["office", ["office", "hobby", "garage"]],
+  printer_3d_enclosed: ["office", ["office", "hobby", "garage"]],
+  filament_shelf_wall: ["storage", ["office", "hobby", "garage"]],
   water_heater: ["heating", ["utility", "bath", "garage"]],
 };
 
