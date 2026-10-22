@@ -1561,6 +1561,78 @@ function buildFurniture(buf: GeoBuffer, lines: LineBuffer, shadow: GeoBuffer, f:
   const d = Math.max(0.05, f.d);
   const h = Math.max(0.005, f.h);
   switch (f.type) {
+    case "modem_router": {
+      // Own low-poly router: chassis, four status LEDs and two rear aerials.
+      b.box(-w * 0.48, w * 0.48, 0, h * 0.38, -d * 0.44, d * 0.44, C.body, C.bodyTop, EDGE_FURN);
+      for (let i = 0; i < 4; i++) {
+        const x = (i - 1.5) * w * 0.16;
+        b.box(x - 0.009, x + 0.009, h * 0.26, h * 0.34, d * 0.43, d * 0.46, C.accent, C.accent);
+      }
+      for (const x of [-w * 0.31, w * 0.31]) {
+        b.cyl(x, -d * 0.32, 0.009, h * 0.28, h * 0.95, C.metal, C.metal, 8);
+      }
+      break;
+    }
+    case "nas_server": {
+      b.box(-w * 0.47, w * 0.47, 0, h, -d * 0.48, d * 0.48, C.body, C.bodyTop, EDGE_FURN);
+      for (let i = 0; i < 4; i++) {
+        const x0 = -w * 0.37 + i * w * 0.185;
+        b.box(x0, x0 + w * 0.15, h * 0.15, h * 0.82, d * 0.481, d * 0.49, C.metal, C.metal, EDGE_FAINT);
+      }
+      b.box(w * 0.34, w * 0.4, h * 0.76, h * 0.82, d * 0.481, d * 0.49, C.accent);
+      break;
+    }
+    case "network_cabinet": {
+      b.box(-w * 0.5, w * 0.5, 0, h * 0.055, -d * 0.5, d * 0.5, C.metal, C.metal, EDGE_FURN);
+      b.box(-w * 0.5, w * 0.5, h * 0.945, h, -d * 0.5, d * 0.5, C.metal, C.metal, EDGE_FURN);
+      for (const x of [-w * 0.48, w * 0.44]) {
+        b.box(x, x + w * 0.04, 0, h, -d * 0.48, d * 0.48, C.metal, C.metal, EDGE_FURN);
+      }
+      for (let i = 0; i < 6; i++) {
+        const y = h * (0.15 + i * 0.115);
+        b.box(-w * 0.37, w * 0.37, y, y + h * 0.077, -d * 0.16, d * 0.35, C.body, C.whiteTop, EDGE_FAINT);
+      }
+      b.box(-w * 0.4, w * 0.4, h * 0.06, h * 0.94, d * 0.475, d * 0.487, C.glass, C.glass, EDGE_FAINT);
+      break;
+    }
+    case "printer_3d_open": {
+      // Open-frame FDM printer (generic; not a copy of a manufacturer's design).
+      b.box(-w * 0.49, w * 0.49, 0, h * 0.09, -d * 0.48, d * 0.48, C.body, C.bodyTop, EDGE_FURN);
+      for (const x of [-w * 0.43, w * 0.39]) {
+        b.box(x, x + w * 0.04, h * 0.08, h * 0.94, -d * 0.35, -d * 0.28, C.metal, C.metal, EDGE_FURN);
+      }
+      b.box(-w * 0.45, w * 0.45, h * 0.87, h * 0.92, -d * 0.36, -d * 0.25, C.metal, C.metal, EDGE_FURN);
+      b.box(-w * 0.38, w * 0.38, h * 0.25, h * 0.29, -d * 0.22, d * 0.33, C.white, C.whiteTop, EDGE_FURN);
+      b.box(-w * 0.36, w * 0.36, h * 0.29, h * 0.302, -d * 0.2, d * 0.31, C.dark, C.dark, EDGE_FAINT);
+      b.box(-w * 0.38, w * 0.38, h * 0.64, h * 0.68, -d * 0.34, -d * 0.27, C.metal, C.metal, EDGE_FURN);
+      b.box(-w * 0.08, w * 0.08, h * 0.52, h * 0.66, -d * 0.28, -d * 0.16, C.bodyTop, C.whiteTop, EDGE_FURN);
+      b.box(-w * 0.015, w * 0.015, h * 0.46, h * 0.52, -d * 0.2, -d * 0.17, C.accent);
+      break;
+    }
+    case "printer_3d_enclosed": {
+      b.box(-w * 0.49, w * 0.49, 0, h * 0.09, -d * 0.49, d * 0.49, C.body, C.bodyTop, EDGE_FURN);
+      b.box(-w * 0.49, w * 0.49, h * 0.91, h, -d * 0.49, d * 0.49, C.body, C.bodyTop, EDGE_FURN);
+      for (const x of [-w * 0.48, w * 0.43]) {
+        b.box(x, x + w * 0.05, h * 0.09, h * 0.91, -d * 0.48, d * 0.48, C.metal, C.metal, EDGE_FURN);
+      }
+      b.box(-w * 0.4, w * 0.4, h * 0.12, h * 0.89, -d * 0.49, -d * 0.47, C.glass, C.glass);
+      b.box(-w * 0.37, w * 0.37, h * 0.25, h * 0.29, -d * 0.24, d * 0.23, C.white, C.whiteTop, EDGE_FURN);
+      b.box(-w * 0.07, w * 0.07, h * 0.59, h * 0.72, -d * 0.24, -d * 0.16, C.bodyTop, C.whiteTop, EDGE_FURN);
+      b.box(w * 0.29, w * 0.43, h * 0.13, h * 0.21, d * 0.485, d * 0.5, C.accent, C.accent);
+      break;
+    }
+    case "filament_shelf_wall": {
+      b.box(-w * 0.5, w * 0.5, 0, h * 0.05, -d * 0.48, d * 0.48, C.wood, C.woodTop, EDGE_FURN);
+      b.box(-w * 0.5, w * 0.5, h * 0.48, h * 0.53, -d * 0.48, d * 0.48, C.wood, C.woodTop, EDGE_FURN);
+      for (const x of [-w * 0.48, w * 0.45]) b.box(x, x + w * 0.03, 0, h, -d * 0.46, d * 0.46, C.metal, C.metal, EDGE_FURN);
+      for (const y of [h * 0.06, h * 0.54]) {
+        for (let i = 0; i < 5; i++) {
+          const x = -w * 0.38 + i * w * 0.19;
+          b.cyl(x, 0, Math.min(w * 0.075, d * 0.34), y, y + h * 0.34, i % 2 ? C.whiteTop : C.accent, C.bodyTop, 10, EDGE_FAINT);
+        }
+      }
+      break;
+    }
     case "sofa":
       sofa(b, w, d, h, Math.max(1, Math.round((w - 0.4) / 0.62)));
       break;
