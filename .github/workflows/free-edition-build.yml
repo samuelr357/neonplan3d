@@ -1,0 +1,47 @@
+name: Build MIT edition frontend
+
+on:
+  push:
+    branches: [free-mit-features-and-devices]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/free-edition-build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+        working-directory: frontend
+      - name: Type-check
+        run: npm run typecheck
+        working-directory: frontend
+      - name: Run tests
+        run: npm test
+        working-directory: frontend
+      - name: Build installable frontend bundles
+        run: npm run build
+        working-directory: frontend
+      - name: Commit generated assets
+        run: |
+          if [ -n "$(git status --porcelain -- custom_components/neonplan3d/frontend)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add custom_components/neonplan3d/frontend
+            git commit -m "build: regenerate MIT edition Home Assistant frontend"
+            git push origin HEAD:free-mit-features-and-devices
+          fi
