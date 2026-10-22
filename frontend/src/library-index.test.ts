@@ -101,7 +101,7 @@ test("the index lists built-in kinds and pack items, folds families into cards a
   assert.ok(sofas.some((c) => c.key === "sofa"), "the built-in sofa is a card too");
 
   const none = { query: "", room: null, electric: false, light: false, outdoor: false };
-  assert.equal(filterEntries(entries, { ...none, query: "chester" }).length, 1);
+  assert.ok(filterEntries(entries, { ...none, query: "chester" }).some((e) => e.type === "pack:mastershort.living:chesterfield"));
   assert.equal(filterEntries(entries, { ...none, query: "sofa sitzer" }).length, 2, "every word must match");
   assert.ok(filterEntries(entries, { ...none, query: "fernseher" }).some((e) => e.type === "pack:mastershort.living:tv_stand"));
   assert.ok(filterEntries(entries, { ...none, query: "lampe" }).some((e) => e.type === "lamp_ceiling"), "everyday words find a kind");

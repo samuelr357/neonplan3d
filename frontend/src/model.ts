@@ -1,3 +1,4 @@
+import { FURNITURE_TYPES as PAT_FURNITURE_TYPES, FURNITURE_GROUPS as PAT_FURNITURE_GROUPS, FURNITURE_SIZE as PAT_FURNITURE_SIZE } from "./furniture/metadata.ts";
 // Data model shared by editor, 3D view and backend (see custom_components/neonplan3d/schema.py).
 // Units are metres; x grows to the right, z grows downwards (as in the 2D editor).
 
@@ -1203,6 +1204,7 @@ export function resizeFurniture(f: Furniture, corner: [1 | -1, 1 | -1], p: Vec2,
 }
 
 export const FURNITURE_TYPES = [
+  ...PAT_FURNITURE_TYPES,
   "lamp_ceiling",
   "lamp_downlight",
   "lamp_spot",
@@ -1297,7 +1299,7 @@ export const FURNITURE_TYPES = [
 ] as const;
 
 /** Furniture library sections (the editor lists them in this order). */
-export const FURNITURE_GROUPS: Record<string, FurnitureType[]> = {
+const LOCAL_FURNITURE_GROUPS: Record<string, FurnitureType[]> = {
   lights: ["lamp_ceiling", "lamp_downlight", "lamp_spot", "lamp_panel", "lamp_pendant", "lamp_fan", "lamp_floor", "lamp_uplight", "lamp_table", "lamp_wall", "led_strip", "lamp_bollard", "lamp_garden"],
   living: ["sofa", "sofa_l", "sofa_u", "armchair", "stool", "coffee_table", "tv_board", "tv_wall", "sideboard", "shelf", "plant", "rug"],
   dining: ["table", "table_round", "chair", "bench", "corner_bench", "bar_stool"],
@@ -1310,6 +1312,14 @@ export const FURNITURE_GROUPS: Record<string, FurnitureType[]> = {
   household: ["waste_bin", "mailbox"],
   switches: ["wall_switch", "wall_socket", "wifi_ap", "water_heater", "modem_router", "nas_server", "network_cabinet"],
 };
+export const FURNITURE_GROUPS: Record<string, FurnitureType[]> = Object.fromEntries(
+  [...new Set([...Object.keys(PAT_FURNITURE_GROUPS), ...Object.keys(LOCAL_FURNITURE_GROUPS)])]
+    .map((group) => [group, [...new Set([
+      ...(PAT_FURNITURE_GROUPS[group] ?? []),
+      ...(LOCAL_FURNITURE_GROUPS[group] ?? []),
+    ])] as FurnitureType[]]),
+);
+
 
 /** Energy devices: placed and set up in the Energy tool (stored like furniture, not in the library). */
 /** Pool Pro: the devices of a pool's technical room (they stand in the plan like furniture, the pipes join them). */
@@ -1582,6 +1592,7 @@ export type FurnitureType = (typeof FURNITURE_TYPES)[number];
 
 /** Default size (width x, depth z, height) of new furniture in metres. */
 export const FURNITURE_SIZE: Record<FurnitureType, [number, number, number]> = {
+  ...PAT_FURNITURE_SIZE,
   sofa: [2.2, 0.9, 0.82],
   // corner sofas: the seats are as deep as the straight sofa's (0.9 m)
   sofa_l: [2.6, 1.8, 0.82],

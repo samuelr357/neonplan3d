@@ -1,0 +1,53 @@
+name: Import PAT MIT furniture catalog
+on:
+  push:
+    branches: [merge-patcoder97-mit-catalog]
+    paths:
+      - scripts/merge_pat_mit_catalog.py
+      - .github/workflows/import-pat-mit-models.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  transplant:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Retrieve pinned MIT source
+        run: |
+          git clone --depth 1 https://github.com/PATCoder97/neonplan3d.git /tmp/pat-neonplan3d
+          git -C /tmp/pat-neonplan3d fetch --depth 1 origin ffccbb4818d3c75d8a5c4372bc27ea1dedc75211
+          git -C /tmp/pat-neonplan3d checkout --detach ffccbb4818d3c75d8a5c4372bc27ea1dedc75211
+          grep -q 'MIT License' /tmp/pat-neonplan3d/LICENSE
+      - name: Transplant free catalog without overriding existing models
+        run: python scripts/merge_pat_mit_catalog.py /tmp/pat-neonplan3d
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: frontend
+      - name: Type-check complete integration
+        run: npm run typecheck
+        working-directory: frontend
+      - name: Test integration
+        run: npm test
+        working-directory: frontend
+      - name: Compile Home Assistant frontend
+        run: npm run build
+        working-directory: frontend
+      - name: Commit all validated model sources and installable assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add frontend/src/furniture frontend/src/viewer/furniture-models frontend/src/components/furniture-symbols frontend/src/viewer/furniture-builder.ts frontend/src/model.ts frontend/src/library-index.ts frontend/src/furniture-names.ts frontend/src/components/furniture2d.ts frontend/src/viewer/furniture.ts frontend/src/pat-library.test.ts frontend/src/library-index.test.ts frontend/build.mjs frontend/lang/pt.json docs/PAT-MIT* custom_components/neonplan3d/frontend site/import
+          git commit -m "feat: integrate PATCoder97 MIT furniture library with compiled bundles"
+          git push origin HEAD:merge-patcoder97-mit-catalog

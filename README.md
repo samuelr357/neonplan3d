@@ -1,5 +1,25 @@
 # NeonPlan 3D
 
+> **Edição comunitária (samuelr357).** Mantém a base MIT recente do projeto
+> Mastershort e incorpora o catálogo de modelos procedurais MIT do
+> [PATCoder97/neonplan3d](https://github.com/PATCoder97/neonplan3d).
+> Nenhum pack comercial distribuído separadamente é incluído. O software
+> continua gratuito e funciona sem criar códigos universais de licença.
+>
+> **Instalar no Home Assistant:** No HACS, adicione
+> https://github.com/samuelr357/neonplan3d como um repositório personalizado
+> do tipo **Integration**. Faça backup do NeonPlan atual, baixe **NeonPlan 3D**
+> desse repositório, reinicie o Home Assistant e atualize a página.
+> **Não instale duas cópias ao mesmo tempo**, pois compartilham o domínio
+> de integração e a pasta custom_components/neonplan3d.
+>
+> **Modelos:** O catálogo procedural de origem contém 465 tipos declarados,
+> incluindo tipos internos (458 itens de biblioteca conforme o PATCoder97),
+> com 392 tipos novos em relação à branch base mais recente.
+> Para reproduzir a integração, veja scripts/merge_pat_mit_catalog.py,
+> docs/PAT-MIT-MODELS.md e docs/PAT-MIT-LICENSE.txt.
+>
+
 [![Spenden mit PayPal](https://img.shields.io/badge/PayPal-Spenden-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=Z3G2VWKSK5VJL)
 
 **by Mastershort** – draw your home right inside Home Assistant and live in it as a neon 3D house: lights glow in their colours, blinds and curtains move, doors and windows open, cameras watch, the TV shows what is playing, energy flows through the walls – and you can simply **talk to it**. No external tools, no cloud, made for wall tablets – old Fire tablets included.
