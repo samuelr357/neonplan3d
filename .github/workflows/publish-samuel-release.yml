@@ -1,0 +1,85 @@
+name: Publish Samuel HACS release
+
+# Keep the current upstream version and append "-1" for this community fork.
+# When upstream changes (e.g. 1.27.0-1), updating the manifest on main
+# automatically publishes its matching GitHub release and HACS ZIP.
+on:
+  push:
+    branches: [main]
+    paths:
+      - custom_components/neonplan3d/manifest.json
+      - .github/workflows/publish-samuel-release.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: samuel-hacs-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Resolve and validate version
+        id: version
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          integration = json.loads(Path("custom_components/neonplan3d/manifest.json").read_text())
+          hacs = json.loads(Path("hacs.json").read_text())
+          v = integration["version"]
+          if not re.fullmatch(r"[0-9]+[.][0-9]+[.][0-9]+-1", v):
+              raise SystemExit("Use upstream version with -1 suffix, e.g. 1.26.0-1")
+          if hacs.get("zip_release") is not True or hacs.get("filename") != "neonplan3d.zip":
+              raise SystemExit("HACS ZIP release settings do not match")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write("version=" + v + "\n")
+              out.write("tag=" + v + "\n")
+          print("Building release", v)
+          PY
+      - name: Typecheck and test
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run typecheck
+          npm test
+      - name: Build installable JavaScript
+        working-directory: frontend
+        run: |
+          npm run build
+          git diff --exit-code -- ../custom_components/neonplan3d/frontend
+      - name: Create HACS ZIP
+        run: |
+          mkdir -p release
+          cd custom_components/neonplan3d
+          find . -name '__pycache__' -prune -o -type f -print | sed 's|^\./||' | sort > /tmp/neonplan3d-release-files
+          zip -q -X "$GITHUB_WORKSPACE/release/neonplan3d.zip" -@ < /tmp/neonplan3d-release-files
+          cd ../..
+          unzip -p release/neonplan3d.zip manifest.json | python3 -c 'import json,sys; assert json.load(sys.stdin)["version"] == "${{ steps.version.outputs.version }}"'
+          unzip -t release/neonplan3d.zip | tail -1
+      - name: Publish full GitHub release with ZIP
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists. Keeping it unchanged."
+            exit 0
+          fi
+          gh release create "$TAG" release/neonplan3d.zip \
+            --target "$GITHUB_SHA" \
+            --title "NeonPlan 3D (Samuel) $VERSION" \
+            --notes "Edição comunitária para HACS com biblioteca MIT ampliada do PATCoder97. O ZIP inclui todos os componentes e JS. Não contém pacotes comerciais externos." \
+            --latest
