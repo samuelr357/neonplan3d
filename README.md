@@ -18,6 +18,16 @@
 
 ---
 
+## Open-source features in this fork
+
+This branch enables the source-bundled MIT implementations of Camera cockpit, Weather outside, Live screens, Energy Pro, Sound & Cinema, Car Pro, Time travel, Pool and Household without requiring shop activation. It does **not** invent a license key, fetch proprietary premium packs, bypass pack signatures, or contain the original author’s separately sold furniture/models. Hidden pack-only features and optional Fun packs still require their own content.
+
+It also adds six **original procedural models** to the built-in furniture library: modem/router, open and enclosed 3D printers, NAS, network cabinet and a filament shelf. These are generic shapes, not Bambu Lab brand-specific reproductions. Home Assistant device entities still need to be connected manually. The MIT copyright and notices are retained.
+
+**Build before installation:** `cd frontend && npm ci && npm run build` (or use the automatic build workflow in this branch); the HACS install must contain updated `custom_components/neonplan3d/frontend` bundles.
+
+---
+
 ## Your house in three steps – no CAD, no Blender
 
 Everything happens in the editor inside Home Assistant, with the 3D house growing next to the plan while you draw.
