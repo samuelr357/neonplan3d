@@ -160,4 +160,13 @@ test("MIT furniture library registered", () => {
     assert.ok(BUILTIN_FURNITURE_MODELS[type]);
 });
 ''')
+
+# The expanded free library also contains a generic chesterfield item, so a
+# search for chester matches both the built-in model and the sample pack.
+p=root/"frontend/src/library-index.test.ts"
+t=p.read_text()
+a='assert.equal(filterEntries(entries, { ...none, query: "chester" }).length, 1);'
+b='assert.ok(filterEntries(entries, { ...none, query: "chester" }).some((e) => e.type === "pack:mastershort.living:chesterfield"));'
+assert a in t
+p.write_text(t.replace(a,b,1))
 print("Imported",len(pat_ids),"MIT types,",len(set(pat_ids)-set(local_ids)),"new to local")
