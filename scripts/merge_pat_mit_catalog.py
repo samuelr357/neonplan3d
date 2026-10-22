@@ -131,7 +131,8 @@ file.write_text(json.dumps(d,ensure_ascii=False,indent=1)+"\n")
 file=root/"frontend/build.mjs"
 s=file.read_text()
 for key,size in {"neonplan3d.js":1000,"neonplan3d-3d.js":2300,
-                 "neonplan3d-editor.js":2400,"neonplan3d-card-editor.js":380}.items():
+                 "neonplan3d-editor.js":2400,"neonplan3d-card-editor.js":380,
+                 "neonplan3d-fun.js":95,"neonplan3d-voice.js":110,"neonplan3d-timetravel.js":190}.items():
     s,n=re.subn(r'("'+re.escape(key)+r'": )\d+( \* 1024)',
                 lambda m:m[1]+str(size)+m[2],s)
     assert n==1,key
