@@ -2,6 +2,7 @@
 // The editor places them with translate/rotate/scale; strokes keep their width on screen.
 
 import { nothing, svg, type SVGTemplateResult } from "lit";
+import { registeredFurnitureSymbol } from "./furniture-symbols/index.ts";
 import { packItem, type PackItem } from "../packs.ts";
 import { stairsULayout } from "../model.ts";
 
@@ -281,6 +282,8 @@ export function furnitureSymbol(type: string, w: number, d: number): Part[] | ty
       return out;
     }
     default: {
+      const registered = registeredFurnitureSymbol(type, w, d);
+      if (registered) return registered;
       const item = packItem(type);
       return item ? packSymbol(item, w, d) : nothing;
     }

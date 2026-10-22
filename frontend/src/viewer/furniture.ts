@@ -1,3 +1,6 @@
+import { FurnitureBuilder as PATFurnitureBuilder } from "./furniture-builder.ts";
+import { renderRegisteredFurniture, registeredFurnitureScreen } from "./furniture-models/index.ts";
+const LOCAL_FURNITURE_IDS = new Set<string>(["lamp_ceiling", "lamp_downlight", "lamp_spot", "lamp_panel", "lamp_pendant", "lamp_floor", "lamp_table", "lamp_wall", "led_strip", "lamp_uplight", "lamp_bollard", "lamp_garden", "radiator", "ac_unit", "sofa", "sofa_l", "sofa_u", "armchair", "stool", "coffee_table", "tv_board", "tv_wall", "sideboard", "shelf", "plant", "rug", "table", "table_round", "chair", "bench", "corner_bench", "bar_stool", "kitchen", "kitchen_wall", "kitchen_tall", "island", "worktop", "sink", "stove", "dishwasher", "fridge", "bed", "bunk_bed", "nightstand", "wardrobe", "dresser", "bathtub", "shower", "wc", "washbasin", "washer", "dryer", "desk", "office_chair", "tall_cabinet", "coat_rack", "stairs", "stairs_u", "robot_vacuum", "modem_router", "nas_server", "network_cabinet", "printer_3d_open", "printer_3d_enclosed", "inverter", "home_battery", "wallbox", "meter", "grid_point", "pool_pump", "pool_filter", "pool_heat_pump", "pool_dosing", "pool_valve", "parking", "fridge_smart", "stairwell", "awning", "waste_bin", "mailbox", "wall_switch", "wall_socket", "lamp_fan", "wifi_ap", "water_heater", "filament_shelf_wall"]);
 // Procedural low-poly furniture in the neon look. Every model is built from boxes and cylinders in
 // local coordinates (x across, z depth with the front at +z, y up) scaled to the item's size, then
 // rotated and moved into place. Solids go into the floor's wall buffer, main outlines into its line
@@ -1459,6 +1462,10 @@ function builtInScreen(f: Furniture, w: number, d: number, h: number, floor?: Fl
     return { x0: -r * 0.4, x1: r * 0.4, y0: h * 0.85, y1: h * 0.94, z: r * 0.45 + 0.004 };
   }
   if (f.type === "pool_dosing") return { x0: -w * 0.4, x1: w * 0.4, y0: 0.9 + h * 0.05, y1: 0.9 + h * 0.4, z: d / 2 + 0.003 };
+  if (!LOCAL_FURNITURE_IDS.has(f.type)) {
+    const patScreen = registeredFurnitureScreen(f.type, w, d, h);
+    if (patScreen !== undefined) return patScreen;
+  }
   if (f.type === "tv_board") {
     const tw = Math.min(w * 0.8, 1.45);
     const th = tw * 0.56;
@@ -1866,6 +1873,15 @@ function buildFurniture(buf: GeoBuffer, lines: LineBuffer, shadow: GeoBuffer, f:
       if (f.variant === "wall") return;
       break;
     default: {
+      if (!LOCAL_FURNITURE_IDS.has(f.type)) {
+        const result = renderRegisteredFurniture(f.type, {
+          b: new PATFurnitureBuilder(buf, lines, tf), w, d, h, base, variant: f.variant ?? null,
+        });
+        if (result !== null) {
+          if (result === false || base > 0.05) return;
+          break;
+        }
+      }
       const item = packItem(f.type);
       if (item) {
         // a motorised curtain's fabric or a roll-down screen's cloth is drawn with its cover's state (pushPackMotion);

@@ -1,3 +1,4 @@
+import { FURNITURE_TYPES as PAT_IDS, FURNITURE_GROUPS as PAT_GROUPS } from "./furniture/metadata.ts";
 // The furniture library's index: every item the editor can place (the built-in kinds and the installed packs'
 // items), sorted by what it is (a sofa, a table, a lamp …) and which rooms it belongs to, with families of
 // variants (a dining table in 120, 160 and 200) folded into one card. Packs may say all this themselves
@@ -78,7 +79,7 @@ export interface LibraryCard {
 
 // ---------------------------------------------------------------------------------------------- built-in kinds
 
-const BASIC: Record<string, [Kind, Room[]]> = {
+const BASIC_LOCAL: Record<string, [Kind, Room[]]> = {
   lamp_ceiling: ["lamp", []],
   lamp_downlight: ["lamp", []],
   lamp_spot: ["lamp", []],
@@ -166,6 +167,26 @@ const BASIC: Record<string, [Kind, Room[]]> = {
   filament_shelf_wall: ["storage", ["office", "hobby", "garage"]],
   water_heater: ["heating", ["utility", "bath", "garage"]],
 };
+const PAT_CLASSIFICATION: Record<string, [Kind, Room[]]> = {
+  lights: ["lamp", []], living: ["storage", ["living"]],
+  dining: ["table", ["dining"]], kitchen: ["kitchen", ["kitchen"]],
+  sleeping: ["storage", ["bedroom","kids"]], bath: ["bath", ["bath"]],
+  climate: ["heating", []], outdoor: ["outdoor", ["garden"]],
+  work: ["office", ["office","hobby"]], vehicles: ["vehicle", ["garage"]],
+  utility: ["tech", ["utility","garage"]], smart_home: ["tech", []],
+  garden: ["outdoor", ["garden"]], garage: ["office", ["garage"]],
+  pets: ["pets", []], fitness: ["sport", ["hobby"]],
+  architecture: ["architecture", []], stairs: ["stairs", []],
+  cinema: ["media", ["living","hobby"]], kids: ["kids", ["kids"]],
+};
+const BASIC: Record<string, [Kind, Room[]]> = Object.fromEntries(
+  PAT_IDS.map((type) => {
+    const group = Object.entries(PAT_GROUPS).find(([, types]) => types.includes(type))?.[0] ?? "work";
+    return [type, PAT_CLASSIFICATION[group] ?? ["office",["office"]]];
+  }),
+);
+Object.assign(BASIC,BASIC_LOCAL);
+
 
 /** The built-in kinds the library offers (the pool devices stand in Pool Pro's tools, energy devices in the energy tool). */
 export function basicTypes(extra: string[] = []): string[] {
