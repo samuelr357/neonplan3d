@@ -1,15 +1,24 @@
 {
   "domain": "neonplan3d",
-  "name": "NeonPlan 3D",
-  "after_dependencies": ["recorder"],
-  "codeowners": ["@Mastershort"],
+  "name": "NeonPlan 3D (Samuel)",
+  "after_dependencies": [
+    "recorder"
+  ],
+  "codeowners": [
+    "@samuelr357"
+  ],
   "config_flow": true,
-  "dependencies": ["frontend", "http", "panel_custom", "websocket_api"],
-  "documentation": "https://mastershort.de/en/neonplan3d/manual/",
+  "dependencies": [
+    "frontend",
+    "http",
+    "panel_custom",
+    "websocket_api"
+  ],
+  "documentation": "https://github.com/samuelr357/neonplan3d#readme",
   "integration_type": "service",
   "iot_class": "calculated",
   "issue_tracker": "https://github.com/mastershort/neonplan3d/issues",
   "requirements": [],
   "single_config_entry": true,
-  "version": "1.26.0"
+  "version": "1.26.0-1"
 }
