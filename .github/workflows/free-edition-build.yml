@@ -9,6 +9,10 @@ on:
       - '.github/workflows/free-edition-build.yml'
   workflow_dispatch:
 
+concurrency:
+  group: community-build-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
