@@ -2,7 +2,7 @@ name: Build MIT edition frontend
 
 on:
   push:
-    branches: [free-mit-features-and-devices, hacs-release-1.26.0-1]
+    branches: [free-mit-features-and-devices, hacs-release-1.26.0-1, facade-energy-v1-26-0-1]
     paths:
       - 'frontend/**'
       - 'custom_components/neonplan3d/manifest.json'
