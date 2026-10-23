@@ -14,7 +14,7 @@
 > de integração e a pasta custom_components/neonplan3d.
 >
 > **Releases e atualizações HACS:** Esta edição aparece como **NeonPlan 3D (Samuel)**,
-> com versões do tipo **1.26.0-1** (versão original + sufixo `-1`).
+> com versões do tipo **v1.26.0.1** (versão original + sufixo `.1`).
 > O [ZIP da release](https://github.com/samuelr357/neonplan3d/releases) é gerado
 > automaticamente quando a versão no `manifest.json` muda na `main`.
 > A entrada oficial Mastershort continua aparecendo separadamente na loja.
