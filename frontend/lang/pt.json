@@ -1714,6 +1714,7 @@
  "floor_open": "{n} abertas",
  "floor_persons": "{n} pessoas",
  "energy_consumption": "Consumo",
+ "energy_setup_hint": "Editor → Energia: configurar sensores",
  "energy_grid_import": "Consumo da rede",
  "energy_grid_export": "Injeção",
  "energy_solar": "Solar",
