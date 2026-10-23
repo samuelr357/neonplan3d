@@ -1213,6 +1213,7 @@
  "roof_swap_hint": "Roda o telhado: os dois lados trocam beiral e inclinação, um telhado de uma água sobe no sentido oposto.",
  "roof_pitch": "Inclinação do telhado (°)",
  "roof_overhang": "Beiral saliente (m)",
+ "roof_parapet_height": "Altura da platibanda (m)",
  "roof_ridge": "Cumeeira",
  "roof_ridge_long": "Ao longo do lado comprido",
  "roof_ridge_short": "Ao longo do lado curto (p. ex. moradia em banda)",
