@@ -5029,8 +5029,8 @@ export class Fp3dView3d extends LitElement {
     const e = this._energy;
     if (!hasFeature("energy_pro") || this.roomId || !this.showEnergy) return nothing;
     // Display a setup reminder rather than invented watts when the user has not linked sensors.
-    if (!e) return html`<div class="fp3d-energy" aria-live="off"><div class="fp3d-energy-item fp3d-energy-total"><span>Energia</span><b>Editor → Energia: configurar sensores</b></div></div>`;
     const t = (k: Parameters<typeof translate>[1]) => translate(this.hass, k);
+    if (!e) return html`<div class="fp3d-energy" aria-live="off"><div class="fp3d-energy-item fp3d-energy-total"><span>${t("energy_consumption")}</span><b>${t("energy_setup_hint")}</b></div></div>`;
     const items: { cls: string; label: string; value: string }[] = [];
     if (e.consumption !== null) items.push({ cls: "total", label: t("energy_consumption"), value: formatPower(this.hass, e.consumption) });
     if (e.grid !== null) {
