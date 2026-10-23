@@ -389,13 +389,12 @@ export function pushSection(
   if (s.shape === "flat" || s.shape === "parapet") {
     const y = s.eave_a;
     const parapet = s.shape === "parapet";
-    // a free shape takes its polygon (grown by the overhang), a plain section its rectangle; a parapet roof has no overhang
+    // Legacy parapets keep their old no-overhang geometry; custom-height parapets may project beyond the wall.
+    const projection = parapet && s.parapet_height == null ? 0 : Math.max(0, Math.min(ov.a, ov.b, ov.u0, ov.u1));
     const poly =
       s.points && s.points.length >= 3
-        ? sectionPolygon(s, parapet ? 0 : Math.max(0, Math.min(ov.a, ov.b, ov.u0, ov.u1)))
-        : parapet
-          ? [fr.at(fr.u0, 0), fr.at(fr.u1, 0), fr.at(fr.u1, w), fr.at(fr.u0, w)]
-          : [fr.at(U0, -oa), fr.at(U1, -oa), fr.at(U1, w + ob), fr.at(U0, w + ob)];
+        ? sectionPolygon(s, projection)
+        : [fr.at(U0, -oa), fr.at(U1, -oa), fr.at(U1, w + ob), fr.at(U0, w + ob)];
     pushPrism(solid, poly, y - yOff, y - yOff + 0.25, ROOF, ROOF_TOP, { bottom: true });
     for (let i = 0; i < poly.length; i++) {
       const a = poly[i];
@@ -404,16 +403,18 @@ export function pushSection(
       lines.seg([a[0], y - yOff, a[1]], [c[0], y - yOff, c[1]], EAVE);
     }
     if (parapet) {
-      // the parapet: a 0.4 m wall ring along the edge, 0.2 m thick, on the slab
+      // Adjustable parapet band around a flat slab, 20 cm thick; legacy default is 40 cm.
+      const bandHeight = Math.min(3, Math.max(0.1, s.parapet_height ?? 0.4));
+      const topY = y - yOff + 0.25 + bandHeight;
       const ccw = (p: Vec2[]) => (polygonArea(p) >= 0 ? p : [...p].reverse());
       const outer = ccw(poly);
       const inner = offsetPolygon(outer, -0.2);
       const n = outer.length;
       for (let i = 0; i < n; i++) {
         const strip = ccw([outer[i], outer[(i + 1) % n], inner[(i + 1) % n], inner[i]]);
-        pushPrism(solid, strip, y - yOff + 0.25, y - yOff + 0.65, ROOF, ROOF_TOP);
-        lines.seg([outer[i][0], y - yOff + 0.652, outer[i][1]], [outer[(i + 1) % n][0], y - yOff + 0.652, outer[(i + 1) % n][1]], RIDGE);
-        lines.seg([inner[i][0], y - yOff + 0.652, inner[i][1]], [inner[(i + 1) % n][0], y - yOff + 0.652, inner[(i + 1) % n][1]], RIDGE);
+        pushPrism(solid, strip, y - yOff + 0.25, topY, ROOF, ROOF_TOP);
+        lines.seg([outer[i][0], topY + 0.002, outer[i][1]], [outer[(i + 1) % n][0], topY + 0.002, outer[(i + 1) % n][1]], RIDGE);
+        lines.seg([inner[i][0], topY + 0.002, inner[i][1]], [inner[(i + 1) % n][0], topY + 0.002, inner[(i + 1) % n][1]], RIDGE);
       }
     }
   } else {
