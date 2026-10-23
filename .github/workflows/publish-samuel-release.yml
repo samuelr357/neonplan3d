@@ -1,7 +1,7 @@
 name: Publish Samuel HACS release
 
-# Keep the current upstream version and append "-1" for this community fork.
-# When upstream changes (e.g. 1.27.0-1), updating the manifest on main
+# Keep the current upstream version and append ".1" for this community fork.
+# When upstream changes (e.g. 1.27.0.1), updating the manifest on main
 # automatically publishes its matching GitHub release and HACS ZIP.
 on:
   push:
@@ -39,13 +39,13 @@ jobs:
           integration = json.loads(Path("custom_components/neonplan3d/manifest.json").read_text())
           hacs = json.loads(Path("hacs.json").read_text())
           v = integration["version"]
-          if not re.fullmatch(r"[0-9]+[.][0-9]+[.][0-9]+-1", v):
-              raise SystemExit("Use upstream version with -1 suffix, e.g. 1.26.0-1")
+          if not re.fullmatch(r"[0-9]+[.][0-9]+[.][0-9]+[.]1", v):
+              raise SystemExit("Use upstream version with .1 suffix, e.g. 1.26.0.1")
           if hacs.get("zip_release") is not True or hacs.get("filename") != "neonplan3d.zip":
               raise SystemExit("HACS ZIP release settings do not match")
           with open(os.environ["GITHUB_OUTPUT"], "a") as out:
               out.write("version=" + v + "\n")
-              out.write("tag=" + v + "\n")
+              out.write("tag=v" + v + "\n")
           print("Building release", v)
           PY
       - name: Typecheck and test
