@@ -3161,7 +3161,7 @@ export class Fp3dEditor extends LitElement {
     return svg`<g class="fp3d-roof-layer">${sections.map((sec, i) => {
       const sel = sec.id === this._roofId;
       const fr = sectionFrame(sec);
-      const shape = sec.shape === "flat" && sec.points && sec.points.length >= 3 ? sec.points : null;
+      const shape = (sec.shape === "flat" || sec.shape === "parapet") && sec.points && sec.points.length >= 3 ? sec.points : null;
       // a dormer or cross gable shows as deep as it is drawn (its ridge meets the slope there)
       const parent = dormerParent(sections, sec);
       const dfr = parent ? sectionFrame(effectiveDormer(parent, sec)) : fr;
@@ -4307,6 +4307,7 @@ export class Fp3dEditor extends LitElement {
           >
           <p class="fp3d-sub fp3d-wide">${this.t("roof_base_hint")}</p>
           ${num(this.t("roof_overhang"), sec.overhang ?? this._doc.settings.roof.overhang, (v) => set({ overhang: Math.min(2, v) }), 0.05, 0)}
+          ${sec.shape === "parapet" ? num(this.t("roof_parapet_height"), sec.parapet_height ?? 0.4, (v) => set({ parapet_height: Math.min(3, v) }), 0.05, 0.1) : nothing}
         </div>
         ${flat && admin
           ? html`<div class="fp3d-actions">
@@ -5657,7 +5658,7 @@ export class Fp3dEditor extends LitElement {
                   </button>
                 </div>`
               : nothing}
-            ${this.houseTool ? html`<div class="fp3d-tool-note">${this.t(this._tool === "energy" ? "energy_only_note" : "roof_only_note")}</div>` : nothing}
+            ${this._tool === "energy" ? html`<div class="fp3d-tool-note">${this.t("energy_only_note")}</div>` : nothing}
             <svg
               class="fp3d-plan fp3d-tool-${this._tool}"
               @pointerdown=${this.onPointerDown}
