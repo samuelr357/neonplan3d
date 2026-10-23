@@ -548,6 +548,9 @@ ROOF_SECTION_SCHEMA = vol.Schema(
         vol.Optional("pitch_b", default=35): vol.All(vol.Coerce(float), vol.Range(min=0, max=80)),
         vol.Required("base"): _HEIGHT,
         vol.Optional("overhang", default=None): vol.Any(None, vol.All(vol.Coerce(float), vol.Range(min=0, max=2))),
+        vol.Optional("parapet_height", default=None): vol.Any(
+            None, vol.All(vol.Coerce(float), vol.Range(min=0.1, max=3))
+        ),
         vol.Optional("flip", default=False): bool,
         # a flat roof as a free shape: its footprint polygon (x0 … z1 hold the bounding box)
         vol.Optional("points", default=None): vol.Any(None, vol.All([_POINT], vol.Length(min=3, max=MAX_POINTS))),

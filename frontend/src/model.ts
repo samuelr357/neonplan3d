@@ -434,6 +434,8 @@ export interface RoofSection {
   base: number;
   /** Overhang beyond the walls (null = the roof setting). */
   overhang?: number | null;
+  /** Editable façade platibanda vertical height above the roof slab, in metres. */
+  parapet_height?: number | null;
   /** Sides a and b swapped: side a is the high coordinate (a pent roof then rises the other way). */
   flip?: boolean;
   /**

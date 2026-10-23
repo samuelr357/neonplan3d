@@ -1481,7 +1481,7 @@ export class Fp3dView3d extends LitElement {
     v.setWeather(this.weather && !this.dimmed && hasFeature("weather") ? { ...(weather ?? { rain: 0, snow: 0, fog: 0, cloud: 0, wind: 0 }), sky: this.skyColor(), disc } : null);
     this.watchLightning(!!weather?.lightning);
     this.applyTint();
-    const hasEnergy = summary.grid !== null || summary.solar !== null || summary.battery !== null || summary.tariff !== null;
+    const hasEnergy = summary.consumption !== null || summary.grid !== null || summary.solar !== null || summary.battery !== null || summary.soc !== null || summary.tariff !== null;
     const energy = hasEnergy ? summary : null;
     // a new object would make Lit render again; only changed values do
     if (JSON.stringify(energy) !== JSON.stringify(this._energy)) this._energy = energy;
@@ -5027,8 +5027,10 @@ export class Fp3dView3d extends LitElement {
 
   private renderEnergy() {
     const e = this._energy;
-    if (!hasFeature("energy_pro") || !e || this.roomId || !this.showEnergy) return nothing;
+    if (!hasFeature("energy_pro") || this.roomId || !this.showEnergy) return nothing;
+    // Display a setup reminder rather than invented watts when the user has not linked sensors.
     const t = (k: Parameters<typeof translate>[1]) => translate(this.hass, k);
+    if (!e) return html`<div class="fp3d-energy" aria-live="off"><div class="fp3d-energy-item fp3d-energy-total"><span>${t("energy_consumption")}</span><b>${t("energy_setup_hint")}</b></div></div>`;
     const items: { cls: string; label: string; value: string }[] = [];
     if (e.consumption !== null) items.push({ cls: "total", label: t("energy_consumption"), value: formatPower(this.hass, e.consumption) });
     if (e.grid !== null) {
